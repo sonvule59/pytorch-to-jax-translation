@@ -1,14 +1,16 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
+import os
 
 # Load the model and tokenizer
-# model_name = "Gen-Verse/ReasonFlux-Coder-4B"
-model_name   = "open-thoughts/OpenThinker3-7B"
+model_name = "open-thoughts/OpenThinker3-7B"
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.float16).eval()
+model = AutoModelForCausalLM.from_pretrained(
+    model_name, trust_remote_code=True, torch_dtype=torch.float16
+).eval()
 
 # Define the prompt
-prompt = """You are an expert programmer. Write a Python function to check if a number is prime.
+prompt = """You are an expert programmer. Write a JAX function to check if a number is prime.
 The function should return True if the number is prime, and False otherwise.
 """
 
@@ -25,6 +27,19 @@ with torch.no_grad():
         pad_token_id=tokenizer.eos_token_id
     )
 
-# Decode and print result
+# Decode the result
 generated_code = tokenizer.decode(outputs[0], skip_special_tokens=True)
-print(generated_code)
+
+# Optional: strip the prompt part if needed
+generated_code_only = generated_code[len(prompt):].strip()
+
+# Output directory
+output_dir = "generated_jax_code"
+os.makedirs(output_dir, exist_ok=True)
+
+# Save to file
+output_file_path = os.path.join(output_dir, "is_prime_jax.py")
+with open(output_file_path, "w") as f:
+    f.write(generated_code_only)
+
+print(f"✅ JAX code written to: {output_file_path}")

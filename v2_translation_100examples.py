@@ -15,8 +15,8 @@ client = OpenAI(api_key=api_key)
 
 # Directories
 
-input_dir = "/Users/sonvu/Documents/Son Vu/Research/Fall2025/LLM-Agent/CC6-HPC-Agent-main/pytorch_files"  # Path to the directory containing PyTorch files
-output_dir = "/Users/sonvu/Documents/Son Vu/Research/Fall2025/LLM-Agent/CC6-HPC-Agent-main/pytorch_to_jax_files"
+input_dir = os.getenv('INPUT_PATH') # Path to the directory containing PyTorch files
+output_dir = os.getenv('OUTPUT_PATH') # Path to save the translated JAX files
 os.makedirs(output_dir, exist_ok=True)
 
 # Translation prompt

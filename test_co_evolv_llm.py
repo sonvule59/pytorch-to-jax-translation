@@ -2,7 +2,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 
 # Load the model and tokenizer
-model_name = "Gen-Verse/ReasonFlux-Coder-4B"
+# model_name = "Gen-Verse/ReasonFlux-Coder-4B"
+model_name = "open-thoughts/OpenThinker3-7B"
 tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True, torch_dtype=torch.float16).eval()
 
@@ -21,7 +22,7 @@ with torch.no_grad():
         **inputs,
         max_new_tokens=1024,
         do_sample=False,  # deterministic
-        temperature=0.7,
+        temperature=0.0,
         pad_token_id=tokenizer.eos_token_id
     )
 

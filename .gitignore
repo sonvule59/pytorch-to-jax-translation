@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 .qodo
 .env
 *.pyc        # Compiled Python files
@@ -15,25 +14,17 @@ sendgrid.env
 # Ignore virtual environment
 webdev/
 staticfiles/
-=======
->>>>>>> ce360a7c23b646aecdf5749f5e8e881cf607af3f
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-<<<<<<< HEAD
 .qodo/
 swaks
 # C extensions
 *.so
 
 .ipynb_checkpoints/
-=======
-# C extensions
-*.so
-
->>>>>>> ce360a7c23b646aecdf5749f5e8e881cf607af3f
 # Distribution / packaging
 .Python
 build/
