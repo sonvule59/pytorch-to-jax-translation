@@ -1,7 +1,7 @@
 import jax
 import jax.nn as nn
 import jax.optim as jax.optim
-
+import torch
 # Initialize JAX RNG
 rng = jax.random.PRNGKeyGenerator().generate_jax_rng(seed=42)
 
