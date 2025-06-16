@@ -1,0 +1,108 @@
+python test_co_evolv_llm.py 
+Loading checkpoint shards: 100%|██████████████████████████████████████████████████████████████████████████████| 2/2 [02:28<00:00, 74.18s/it]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+You are an expert programmer. Write a Python function to check if a number is prime.
+The function should return True if the number is prime, and False otherwise.
+Then generate unit tests based on the output. Just write code. No explanation or comments
+import unittest
+
+def is_prime(n):
+    # your code here
+
+class TestPrimeFunction(unittest.TestCase):
+    # your code here
+
+if __name__ == '__main__':
+    unittest.main()
+Okay, I need to write a Python function called is_prime that checks if a number is prime. Then create unit tests for it. Let me think about how to implement the function.
+
+First, what's a prime number? A prime is a number greater than 1 that has no divisors other than 1 and itself. So numbers less than 2 are not prime. So first check if n is less than 2, return False.
+
+Then for numbers 2 and above. For 2, it's prime. For numbers greater than 2, check divisibility from 2 up to the square root of n. Because if n has a factor larger than its square root, the corresponding divisor would be smaller than the square root.
+
+So the steps for the function:
+
+- If n < 2: return False
+- If n == 2: return True
+- If n is even (n % 2 == 0): return False
+- Then check for divisors from 3 up to sqrt(n), stepping by 2 (since even numbers are already handled)
+
+Wait, but how to loop? Let me think. For i in range 3 to sqrt(n), step 2. For each i, check if n % i == 0. If any, return False. Else, return True.
+
+But how to compute the square root? Using math.sqrt(n), then take the integer part. Or maybe use i*i <= n to avoid importing math.
+
+Yes, that's better. Because for i in range 3 to sqrt(n), but in code, we can loop i from 3 to sqrt(n), but in Python, the range is exclusive of the upper limit. So maybe:
+
+for i in range(3, int(n**0.5) + 1, 2):
+
+Wait, but for example, if n is 9, sqrt(9) is 3. So the loop would go up to 3. So in that case, 3 is included. So that's correct.
+
+So the code for is_prime:
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+Wait, but what about numbers like 3? For example, n=3. Then sqrt(3) is ~1.732, so int(1.732) is 1. So the range is from 3 to 1 + 1 = 2. So range(3, 2, 2) is empty. So the loop doesn't run, returns True. Which is correct.
+
+Another example: n=5. sqrt(5) is ~2.236. int is 2. So range(3, 2 + 1, 2) is range(3,3,2) which is empty. So returns True. Correct.
+
+Another example: n=9. sqrt(9) is 3. So range(3, 3+1=4, 2) is 3. So check 3. 9%3 is 0, returns False. Correct.
+
+So that seems to work.
+
+Now, the unit tests. Need to test various cases.
+
+Test cases:
+
+- n=2: True
+- n=3: True
+- n=4: False
+- n=5: True
+- n=6: False
+- n=7: True
+- n=1: False
+- n=0: False
+- n=-5: False
+- n=9: False
+- n=15: False
+- n=25: False
+- n=29: True
+
+So in the TestPrimeFunction class, create test methods for each of these.
+
+Each test method should call is_prime with the given number and check the expected result.
+
+So:
+
+class TestPrimeFunction(unittest.TestCase):
+    def test_prime_2(self):
+        self.assertTrue(is_prime(2))
+    
+    def test_prime_3(self):
+        self.assertTrue(is_prime(3))
+    
+    def test_not_prime_4(self):
+        self.assertFalse(is_prime(4))
+    
+    def test_prime_5(self):
+        self.assertTrue(is_prime(5))
+    
+    def test_not_prime_6(self):
+        self.assertFalse(is_prime(6))
+    
+    def test_prime_7(self):
+        self.assertTrue(is_prime(7))
+    
+    def test_not_prime_1(self):
+        self.assertFalse(is_prime(1))
+    
+    def test_not_prime_0(self
