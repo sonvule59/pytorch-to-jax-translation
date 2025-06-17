@@ -38,8 +38,8 @@ for step in jax.range(1000):
         optimizer.apply(loss)
 
 # Display the learned parameters
-w, b = model.linear.initializers().values()
-print(f"Learned weight: {w.item():.4f}, Learned bias: {b.item():.4f}")
+weight, bias = model.linear.get_parameters()
+print(f"Learned weight: {weight()[0].item():.4f}, Learned bias: {bias()[0].item():.4f}")
 
-# Plotting (Note: JAX doesn't have built-in plotting functions; use external libraries)
-# For the purpose of this example, dummy code is provided
+# Plotting (Note: JAX doesn't have built-in plotting; use external libraries like matplotlib)
+# This example skips plotting for brevity but should be similar to the PyTAX version
