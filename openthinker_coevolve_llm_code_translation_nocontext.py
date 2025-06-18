@@ -40,16 +40,41 @@ def load_code_files(folder_path, max_files=5):
                 break
     return code_examples
 
+def load_minimal_pytorch_cases():
+    return [
+        {
+            "id": "tensor_addition.py",
+            "language": "python",
+            "code": "import torch\n\na = torch.tensor([1.0, 2.0])\nb = torch.tensor([3.0, 4.0])\nc = a + b"
+        },
+        {
+            "id": "matmul.py",
+            "language": "python",
+            "code": "import torch\n\nA = torch.randn(2, 3)\nB = torch.randn(3, 4)\nC = torch.matmul(A, B)"
+        },
+        {
+            "id": "relu_op.py",
+            "language": "python",
+            "code": "import torch\nimport torch.nn as nn\n\nrelu = nn.ReLU()\nx = torch.tensor([-1.0, 0.0, 1.0])\ny = relu(x)"
+        }
+    ]
+
 # ----- PROMPT CREATION -----
 def create_jax_prompt(code, reasoning_mode=False):
     if reasoning_mode:
         instruction = (
-            "You are a helpful AI that reasons step-by-step to translate Python code written using PyTorch to equivalent JAX code. "
-            "First analyze what the code is doing, then output the full JAX version. Do not explain anything. Output only code.\n\n"
+            f"""You are a helpful AI that reasons step-by-step to translate PyTorch code into equivalent JAX code. Analyze what the code is doing, 
+            then translate the in JAX version.
+            Do not explain anything. Output only code. and then after generate test cases, using that test cases as your knowledge, 
+            and either rewrite the translated JAX code, or retranslate from the Pytorch inputs. Do that until you think the code is correct 
+            and consistent with the functionalities of the input Pytorch code.\n\n"""
         )
     else:
         instruction = (
-            "Translate the following Python code using PyTorch to JAX. Output only valid JAX code. No explanation or markdown.\n\n"
+            f"""Translate the following Python code using PyTorch to JAX. Output only code. No explanation or markdown.
+            and then after generate test cases, using that test cases as your knowledge, and either rewrite the translated JAX code, 
+            or retranslate from the Pytorch inputs. Do that until you think the code is correct and consistent with the functionalities of 
+            the input Pytorch code.\n\n"""
         )
 
     max_code_length = 14000
@@ -72,7 +97,7 @@ def translate_code_to_jax(code, tokenizer, model, reasoning_mode=False):
     outputs = model.generate(
         **inputs,
         max_new_tokens=2048,
-        temperature=0.0,
+        temperature=0.7,
         top_p=0.9,
         do_sample=False,
         pad_token_id=tokenizer.eos_token_id
@@ -95,12 +120,14 @@ if __name__ == "__main__":
     for mode_name, reasoning in [("no_reasoning", False), ("with_reasoning", True)]:
         print(f"===== Starting {mode_name.replace('_', ' ').title()} Mode =====")
 
-        folder = INPUT_FILES
-        print(f"📂 Loading files from: {folder}")
-        code_examples = load_code_files(folder)
+        # folder = INPUT_FILES
+        # print(f"📂 Loading files from: {folder}")
+        # code_examples = load_code_files(folder)
+        
+        print("🧪 Using only simple PyTorch examples.")
+        code_examples = load_minimal_pytorch_cases()
 
         print("🚀 Loading model...")
-
         tokenizer, model = load_model("open-thoughts/OpenThinker3-7B")  # Replace if needed
 
         print("🔁 Translating to JAX...")
@@ -116,10 +143,10 @@ if __name__ == "__main__":
                 "translated_code": jax_code
             })
 
-        save_dir = f"jax_{mode_name}_translated"
+        save_dir = f"openthinker_jax_{mode_name}_translated"
         save_jax_files(translated_examples, output_dir=save_dir)
 
-        json_file = f"jax_{mode_name}_results_only_translation.json"
+        json_file = f"openthinker_jax_{mode_name}_results_only_translation.json"
         print(f"💾 Saving output to '{json_file}'")
         with open(json_file, "w") as f:
             json.dump(translated_examples, f, indent=2)
