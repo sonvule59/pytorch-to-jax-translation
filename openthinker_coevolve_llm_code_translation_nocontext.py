@@ -22,7 +22,7 @@ def load_model(model_path):
     return tokenizer, model
 
 # ----- LOAD FILES -----
-def load_code_files(folder_path, max_files=5):
+def load_code_files(folder_path, max_files=10):
     code_examples = []
     count = 0
     for filename in sorted(os.listdir(folder_path)):
@@ -62,20 +62,32 @@ def load_minimal_pytorch_cases():
 # ----- PROMPT CREATION -----
 def create_jax_prompt(code, reasoning_mode=False):
     if reasoning_mode:
+        # instruction = (
+        #     f"""You are a helpful AI that reasons step-by-step to translate PyTorch code into equivalent JAX code. Analyze what the code is doing, 
+        #     then translate the in JAX version.
+        #     Do not explain anything. Output only code. and then after generate test cases, using that test cases as your knowledge, 
+        #     and either rewrite the translated JAX code, or retranslate from the Pytorch inputs. Do that until you think the code is correct 
+        #     and consistent with the functionalities of the input Pytorch code.\n\n"""
+        # )
         instruction = (
-            f"""You are a helpful AI that reasons step-by-step to translate PyTorch code into equivalent JAX code. Analyze what the code is doing, 
-            then translate the in JAX version.
-            Do not explain anything. Output only code. and then after generate test cases, using that test cases as your knowledge, 
-            and either rewrite the translated JAX code, or retranslate from the Pytorch inputs. Do that until you think the code is correct 
-            and consistent with the functionalities of the input Pytorch code.\n\n"""
+            """ First, think step by step about how the PyTorch code works. Then Translate the input Pytorch code into JAX version.
+            Do not explain anything. Output only code. and then after generate test cases to test the output.
+            Make sure the translated JAX code is correct and consistent with the functionalities of 
+            the input Pytorch code. """
         )
     else:
         instruction = (
-            f"""Translate the following Python code using PyTorch to JAX. Output only code. No explanation or markdown.
-            and then after generate test cases, using that test cases as your knowledge, and either rewrite the translated JAX code, 
-            or retranslate from the Pytorch inputs. Do that until you think the code is correct and consistent with the functionalities of 
-            the input Pytorch code.\n\n"""
+            """ Translate the input Pytorch code into JAX version.
+            Do not explain anything. Output only code. and then after generate test cases to test the output.
+            Make sure the translated JAX code is correct and consistent with the functionalities of 
+            the input Pytorch code. """
         )
+        # instruction = (
+        #     """Translate the following Python code using PyTorch to JAX. Output only code. No explanation or markdown.
+        #     and then after generate test cases, using that test cases as your knowledge, and either rewrite the translated JAX code, 
+        #     or retranslate from the Pytorch inputs. Do that until you think the code is correct and consistent with the functionalities of 
+        #     the input Pytorch code.\n\n"""
+        # )
 
     max_code_length = 14000
     if len(code) > max_code_length:
@@ -85,6 +97,8 @@ def create_jax_prompt(code, reasoning_mode=False):
 
 # ----- CLEAN OUTPUT -----
 def clean_translated_code(raw_output):
+    if "!" in raw_output and len(set(raw_output.strip())) == 1:
+        return "# Translation failed: invalid output"
     blocks = re.findall(r"```[a-zA-Z0-9]*\n(.*?)```", raw_output, re.DOTALL)
     if blocks:
         return blocks[0].strip()
@@ -97,8 +111,8 @@ def translate_code_to_jax(code, tokenizer, model, reasoning_mode=False):
     outputs = model.generate(
         **inputs,
         max_new_tokens=2048,
-        temperature=0.7,
-        top_p=0.9,
+        # temperature=0.7,
+        # top_p=0.9,
         do_sample=False,
         pad_token_id=tokenizer.eos_token_id
     )
@@ -120,12 +134,12 @@ if __name__ == "__main__":
     for mode_name, reasoning in [("no_reasoning", False), ("with_reasoning", True)]:
         print(f"===== Starting {mode_name.replace('_', ' ').title()} Mode =====")
 
-        # folder = INPUT_FILES
-        # print(f"📂 Loading files from: {folder}")
-        # code_examples = load_code_files(folder)
+        folder = INPUT_FILES
+        print(f"📂 Loading files from: {folder}")
+        code_examples = load_code_files(folder)
         
-        print("🧪 Using only simple PyTorch examples.")
-        code_examples = load_minimal_pytorch_cases()
+        # print("🧪 Using only simple PyTorch examples.")
+        # code_examples = load_minimal_pytorch_cases()
 
         print("🚀 Loading model...")
         tokenizer, model = load_model("open-thoughts/OpenThinker3-7B")  # Replace if needed

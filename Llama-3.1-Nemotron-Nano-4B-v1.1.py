@@ -4,6 +4,12 @@ import re
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 from dotenv import load_dotenv
+# import PIL
+# from PIL import Image, ImageOps, ImageEnhance, PILLOW_VERSION
+
+
+# print(PIL.__version__)  # If you still need the version info
+
 
 load_dotenv()
 INPUT_FILES = os.getenv('INPUT_FOLDER_PATH')
@@ -21,7 +27,7 @@ def load_model(model_path):
     return tokenizer, model
 
 # ----- LOAD FILES -----
-def load_code_files(folder_path, max_files=20):
+def load_code_files(folder_path, max_files=100):
     code_examples = []
     count = 0
     for filename in sorted(os.listdir(folder_path)):
@@ -43,8 +49,8 @@ def load_code_files(folder_path, max_files=20):
 def create_jax_prompt(code, reasoning_mode=False):
     if reasoning_mode:
         instruction = (
-            "You are a helpful AI that reasons step-by-step to translate Python code written using PyTorch to equivalent JAX code. "
-            "First analyze what the code is doing, then translate the full JAX version. No explanation or markdown. Output only code.\n\n"
+            "Please use step-by-step reasoning to translate Python code written using PyTorch to equivalent JAX code. "
+            "No explanation or markdown. Output only code.\n\n"
         )
     else:
         instruction = (
@@ -90,7 +96,8 @@ def save_jax_files(examples, output_dir):
 
 # ----- MAIN -----
 if __name__ == "__main__":
-    for mode_name, reasoning in [("no_reasoning", False), ("with_reasoning", True)]:
+    for mode_name, reasoning in [("with_reasoning", True)]:
+    # for mode_name, reasoning in [("no_reasoning", False), ("with_reasoning", True)]:
         print(f"===== Starting {mode_name.replace('_', ' ').title()} Mode =====")
 
         folder = INPUT_FILES
@@ -113,10 +120,10 @@ if __name__ == "__main__":
                 "translated_code": jax_code
             })
 
-        save_dir = f"jax_{mode_name}_translated"
+        save_dir = f"llama-3.1_Nemotron_Nano_4B-v1.1_jax_{mode_name}_translated"
         save_jax_files(translated_examples, output_dir=save_dir)
 
-        json_file = f"jax_{mode_name}_results_only_translation.json"
+        json_file = f"llama-3.1_Nemotron_Nano_4B-v1.1_jax_{mode_name}_results_only_translation.json"
         print(f"💾 Saving output to '{json_file}'")
         with open(json_file, "w") as f:
             json.dump(translated_examples, f, indent=2)
