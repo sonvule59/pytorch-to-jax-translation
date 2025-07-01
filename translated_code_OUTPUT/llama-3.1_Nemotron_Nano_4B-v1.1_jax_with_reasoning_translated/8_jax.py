@@ -1,5 +1,4 @@
-N/A
-Code only:
+
 import jax
 import jax.numpy as jnp
 from jax import compactor

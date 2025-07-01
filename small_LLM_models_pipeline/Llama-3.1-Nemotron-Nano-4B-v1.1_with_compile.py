@@ -22,7 +22,7 @@ def load_model(model_path):
     return tokenizer, model
 
 # ----- LOAD FILES -----
-def load_code_files(folder_path, max_files=50):
+def load_code_files(folder_path, max_files=10):
     code_examples = []
     count = 0
     for filename in sorted(os.listdir(folder_path)):

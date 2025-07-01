@@ -3,7 +3,7 @@ import subprocess
 import time
 import json
 
-INPUT_DIR = "./llama-3.1_Nemotron_Nano_4B-v1.1_jax_with_reasoning_translated"
+INPUT_DIR = "/translated_code_OUTPUT/llama-3.1_Nemotron_Nano_4B-v1.1_jax_with_reasoning_translated/"
 dir_name = os.path.basename(os.path.normpath(INPUT_DIR))
 LOG_JSON = f"{dir_name}_run_log.json"
 ERROR_LOG = f"{dir_name}_run_errors.txt"
