@@ -1,0 +1,69 @@
+🛑 Runtime error in: e1_jax.py
+WARNING:2025-07-07 11:54:22,286:jax._src.xla_bridge:791: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+jax.errors.SimplifiedTraceback: For simplicity, JAX has removed its internal frames from the traceback of the following exception. Set JAX_TRACEBACK_FILTERING=off to include these.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e1_jax.py", line 179, in <module>
+    params, opt_state = train_step(params, opt_state, X, y)
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e1_jax.py", line 170, in train_step
+    grads = grad(loss)(params, X, y)
+TypeError: Argument '<function linear_regression_model.<locals>.forward at 0x78d1d05f8b80>' of type <class 'function'> is not a valid JAX type.
+
+🛑 Runtime error in: e2_jax.py
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e2_jax.py", line 3, in <module>
+    import pandas as pd
+ModuleNotFoundError: No module named 'pandas'
+
+🛑 Runtime error in: e3_jax.py
+WARNING:2025-07-07 11:54:24,775:jax._src.xla_bridge:791: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e3_jax.py", line 53, in <module>
+    opt_init, opt_update = jaxopt.SGD.create(initial_params=params, learning_rate=0.01)
+NameError: name 'jaxopt' is not defined
+
+🛑 Runtime error in: e4_jax.py
+WARNING:2025-07-07 11:54:25,646:jax._src.xla_bridge:791: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e4_jax.py", line 135, in <module>
+    X = jnp.array(np.random.default_rng(subkey).random(100) * 10).reshape(100, 1)
+  File "numpy/random/_generator.pyx", line 5084, in numpy.random._generator.default_rng
+  File "numpy/random/_pcg64.pyx", line 123, in numpy.random._pcg64.PCG64.__init__
+  File "numpy/random/bit_generator.pyx", line 535, in numpy.random.bit_generator.BitGenerator.__init__
+  File "numpy/random/bit_generator.pyx", line 307, in numpy.random.bit_generator.SeedSequence.__init__
+TypeError: SeedSequence expects int or sequence of ints for entropy not [  64467757 2916123636]
+
+🛑 Runtime error in: e5_jax.py
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e5_jax.py", line 1
+    (only the code, no explanations)
+     ^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+
+🛑 Runtime error in: e6_jax.py
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e6_jax.py", line 7, in <module>
+    from sklearn.linear_model import LinearRegression
+ModuleNotFoundError: No module named 'sklearn'
+
+🛑 Runtime error in: e7_jax.py
+WARNING:2025-07-07 11:54:26,849:jax._src.xla_bridge:791: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/e7_jax.py", line 30, in <module>
+    grads = grad(loss)(X)
+  File "/home/hungphd/Son/LLM/lib/python3.10/site-packages/jax/_src/api.py", line 425, in grad
+    value_and_grad_f = value_and_grad(fun, argnums, has_aux=has_aux,
+  File "/home/hungphd/Son/LLM/lib/python3.10/site-packages/jax/_src/api.py", line 489, in value_and_grad
+    check_callable(fun)
+  File "/home/hungphd/Son/LLM/lib/python3.10/site-packages/jax/_src/api_util.py", line 460, in check_callable
+    raise TypeError(f"Expected a callable value, got {fun}")
+TypeError: Expected a callable value, got 10.555112838745117
+
+🛑 Runtime error in: h1_jax.py
+WARNING:2025-07-07 11:54:27,531:jax._src.xla_bridge:791: An NVIDIA GPU may be present on this machine, but a CUDA-enabled jaxlib is not installed. Falling back to cpu.
+Traceback (most recent call last):
+  File "/home/hungphd/Son_Google_team/small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/h1_jax.py", line 10, in <module>
+    y = 2 * X + 3 + jnp.random.randn(100, 1)  # Linear relationship with noise
+AttributeError: module 'jax.numpy' has no attribute 'random'
+
