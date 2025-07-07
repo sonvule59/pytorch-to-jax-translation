@@ -45,4 +45,3 @@ X_test = jnp.array([[4.0], [7.0]])
 with jax.disable_jit():
     predictions = model.predict(X_test)
     print(f"Predictions for {X_test.tolist()}: {predictions.tolist()}")
-

@@ -51,4 +51,40 @@ model = LinearRegressionModel()
 criterion = lambda y_pred, y_true: jnp.mean((y_pred - y_true) ** 2)
 optimizer = jax.experimental.optimizers.Adam(learning_rate=0.01)
 
-# Training
+# Training loop
+epochs = 1000
+for epoch in range(epochs):
+    # Forward pass
+    predictions = model(X)
+    loss = criterion(predictions, y)
+
+    # Backward pass and optimization
+    grads = jax.grad(loss)(model, X)
+    # grads = jax.grad(loss)(model, X)
+# Training loop
+epochs = 1000
+for epoch in range(epochs):
+    # Forward pass
+    predictions = model(X)
+    loss = criterion(predictions, y)
+
+    # Backward pass and optimization
+    grads = jax.grad(loss)(model, X)
+    # grads = jax.grad(loss)(model, X)
+    # optimizer.update(grads, model)
+    # model = optimizer.update(grads, model)
+
+    # Log progress every 100 epochs
+    if (epoch + 1) % 100 == 0:
+        print(f"Epoch [{epoch + 1}/{epochs}], Loss: {loss.item():.4f}")
+
+# Display the learned parameters
+[w, b] = model.parameters()
+print(f"Learned weight: {w.item():.4f}, Learned bias: {b.item():.4f}")
+
+# Testing on new data
+X_test = jnp.array([[4.0], [7.0]])
+with jax.disable_jit():
+    predictions = model(X_test)
+    print(f"Predictions for {X_test.tolist()}: {predictions.tolist()}")
+
