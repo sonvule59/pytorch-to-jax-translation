@@ -196,3 +196,4 @@ cython_debug/\
 large_test_datasets_codeparrot_v1 2/__MACOSX/large_test_datasets_codeparrot_v1/
 large_test_datasets_codeparrot_v1 2/__MACOSX/._large_test_datasets_codeparrot_v1
 large_test_datasets_codeparrot_v1 2/large_test_datasets_codeparrot_v1/
+small_LLM_models_pipeline/reasonfluxcoder_4b_jax_translated_code/data.csv

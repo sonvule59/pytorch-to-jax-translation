@@ -8,7 +8,7 @@ np.random.seed(42)
 X = np.random.rand(100, 1) * 10  # 100 data points between 0 and 10
 y = 2 * X + 3 + np.random.randn(100, 1)  # Linear relationship with noise
 
-class LearnedSiLUFunction(jax.api.JaxFunction):
+class LearnedSiLUFunction:
     def __init__(self):
         super().__init__()
 
@@ -37,7 +37,7 @@ class LearnedSiLUFunction(jax.api.JaxFunction):
         return grad_input, grad_slope
 
 # Define the Linear Regression Model
-class LinearRegressionModel(jax.api.JaxModule):
+class LinearRegressionModel:
     def __init__(self, slope=1):
         super().__init__()
         self.slope = jnp.array(slope)
